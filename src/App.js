@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, FlatList, Button, StatusBar} from 'react-native';
 import faker from 'faker';
 import Movie from './Movie';
