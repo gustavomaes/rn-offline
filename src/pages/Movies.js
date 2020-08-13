@@ -5,7 +5,12 @@ import faker from 'faker';
 import Movie from './Movie';
 import MovieModel from '../model/MovieModel';
 import {useObservable} from 'rxjs-hooks';
-import {saveMovie, updateMovie, deleteMovie} from '../model/MovieController';
+import {
+  saveMovie,
+  saveMovieWhitId,
+  updateMovie,
+  deleteMovie,
+} from '../model/MovieController';
 
 const Movies = () => {
   const database = useDatabase();
@@ -19,7 +24,7 @@ const Movies = () => {
       .then((response) => response.json())
       .then((json) => {
         json.map(async (item) => {
-          await saveMovie(database, moviesCollection, item);
+          await saveMovieWhitId(database, moviesCollection, item);
         });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,7 +37,21 @@ const Movies = () => {
       Images: 'https://picsum.photos/300/200',
     };
 
-    await saveMovie(database, moviesCollection, data);
+    const newMovie = await saveMovie(database, moviesCollection, data);
+    console.log('newMovie> ', newMovie.id);
+    fetch('http://localhost:3000/movies/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...data,
+        id: newMovie.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => console.log('newMovie> ', json));
   };
 
   const updateTitle = async (movie) => {
@@ -55,13 +74,20 @@ const Movies = () => {
       }),
     })
       .then((response) => response.json())
-      .then((json) => {
-        console.log('newTitle> ', json);
-      });
+      .then((json) => console.log('newTitle> ', json));
   };
 
   const deleteItem = async (movie) => {
     await deleteMovie(database, movie);
+    fetch(`http://localhost:3000/movies/${movie.id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log('deleteItem> ', json));
   };
 
   return (
