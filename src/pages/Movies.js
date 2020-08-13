@@ -5,6 +5,7 @@ import faker from 'faker';
 import Movie from './Movie';
 import MovieModel from '../model/MovieModel';
 import {useObservable} from 'rxjs-hooks';
+import {saveMovie, updateMovie, deleteMovie} from '../model/MovieController';
 
 const Movies = () => {
   const database = useDatabase();
@@ -13,28 +14,12 @@ const Movies = () => {
     moviesCollection.query().observeWithColumns(['Title']),
   );
 
-  const saveMovie = async (data) => {
-    console.log('saveMovie> ', data);
-    await database.action(async () => {
-      const newMovie = await moviesCollection.create((movie) => {
-        movie.Title = data.Title;
-        movie.Plot = data.Plot;
-        movie.Images = data.Images;
-        movie._raw.id = String(data.id);
-        movie.movie_id = data.id;
-      });
-      console.log('newPost> ', newMovie);
-    });
-  };
-
   useEffect(() => {
-    // async function
     fetch('http://localhost:3000/movies')
       .then((response) => response.json())
       .then((json) => {
         json.map(async (item) => {
-          // console.log(item);
-          await saveMovie(item);
+          await saveMovie(database, moviesCollection, item);
         });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,23 +32,17 @@ const Movies = () => {
       Images: 'https://picsum.photos/300/200',
     };
 
-    await database.action(async () => {
-      await moviesCollection.create((movie) => {
-        movie.Title = data.Title;
-        movie.Plot = data.Plot;
-        movie.Images = data.Images;
-        movie.movie_id = data.id;
-      });
-    });
+    await saveMovie(database, moviesCollection, data);
   };
 
   const updateTitle = async (movie) => {
     const newTitle = movie.Title + ' ' + faker.random.number(1);
-    await database.action(async () => {
-      await movie.update((updateItem) => {
-        updateItem.Title = newTitle;
-      });
-    });
+    const data = {
+      Title: newTitle,
+      Plot: movie.Plot,
+      Images: movie.Images,
+    };
+    await updateMovie(database, movie, data);
 
     fetch(`http://localhost:3000/movies/${movie.id}`, {
       method: 'PATCH',
@@ -82,9 +61,7 @@ const Movies = () => {
   };
 
   const deleteItem = async (movie) => {
-    await database.action(async () => {
-      await movie.destroyPermanently(); // permanent
-    });
+    await deleteMovie(database, movie);
   };
 
   return (
@@ -100,7 +77,7 @@ const Movies = () => {
               <Movie
                 movie={item.item}
                 updateTitle={(movie) => updateTitle(movie)}
-                deleteItem={(movie) => deleteItem(movie)}
+                deleteItem={async (movie) => deleteItem(movie)}
               />
             );
           }}
