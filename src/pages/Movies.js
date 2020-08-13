@@ -5,15 +5,13 @@ import faker from 'faker';
 import Movie from './Movie';
 import MovieModel from '../model/MovieModel';
 import {useObservable} from 'rxjs-hooks';
-import withObservables from '@nozbe/with-observables';
-import {withDatabase} from '@nozbe/watermelondb/DatabaseProvider';
 
-const Movies = ({movies}) => {
+const Movies = () => {
   const database = useDatabase();
-  console.log('movies> ', movies);
-  // movies.map((item) => console.log(item.Title));
   const moviesCollection = MovieModel.useCollection();
-  // const [movies, setMovies] = useState([]);
+  const movies = useObservable(() =>
+    moviesCollection.query().observeWithColumns(['Title']),
+  );
 
   const saveMovie = async (data) => {
     console.log('saveMovie> ', data);
@@ -39,6 +37,7 @@ const Movies = ({movies}) => {
           await saveMovie(item);
         });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addMovie = async () => {
@@ -49,17 +48,13 @@ const Movies = ({movies}) => {
     };
 
     await database.action(async () => {
-      const newMovie = await moviesCollection.create((movie) => {
+      await moviesCollection.create((movie) => {
         movie.Title = data.Title;
         movie.Plot = data.Plot;
         movie.Images = data.Images;
         movie.movie_id = data.id;
       });
-      console.log('newPost> ', newMovie);
     });
-
-    //     setMovies(addMovies);
-    //   });
   };
 
   const updateTitle = async (movie) => {
@@ -98,7 +93,7 @@ const Movies = ({movies}) => {
       <SafeAreaView>
         <Button title="ADD MOVIE" onPress={addMovie} />
         <FlatList
-          data={movies.reverse()}
+          data={movies ? movies.reverse() : []}
           renderItem={(item) => {
             console.log('item> ', item.item.id);
             return (
@@ -114,13 +109,5 @@ const Movies = ({movies}) => {
     </>
   );
 };
-const MovieListScreen = withDatabase(
-  withObservables(['movies'], ({database}) => ({
-    movies: database.collections
-      .get('movies')
-      .query()
-      .observeWithColumns(['Title']),
-  }))(Movies),
-);
 
-export default MovieListScreen;
+export default Movies;
