@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Button} from 'react-native';
 
-const Movie = ({movie}) => {
+const Movie = ({movie, updateTitle, deleteItem}) => {
   const {Title, Plot, Images} = movie;
   return (
     <View
@@ -17,6 +17,8 @@ const Movie = ({movie}) => {
         resizeMode="contain"
         style={{width: '100%', height: 200, alignSelf: 'center'}}
       />
+      <Button title="update" onPress={() => updateTitle(movie)} />
+      <Button title="delete" onPress={() => deleteItem(movie)} />
       <View
         style={{
           width: '90%',

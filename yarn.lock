@@ -5895,6 +5895,14 @@ rxjs-compat@^6.3.2:
   resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.6.2.tgz#23592564243cf24641a5d2e2d2acfc8f6b127186"
   integrity sha512-C3V7axnAkPd91sbW1XreL8ydLM+phUcKViM76GBuT3hCzHMSQbszE/h6ajkgcrDn9j4JZ/OdzklvfAJ9MmXRcg==
 
+rxjs-hooks@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/rxjs-hooks/-/rxjs-hooks-0.6.2.tgz#08428ea10739a8da50a9b45724faf7f81156e4cf"
+  integrity sha512-oFyjJhhZ4D8bWVNT36J9iCr7p+qVCO7Y6T3XzypXqJf2qxCuURJaCAmARy0mAKbckNQv/0R78mhQxfTcGgECjQ==
+  dependencies:
+    tslib "^1.10.0"
+    use-constant "^1.0.0"
+
 rxjs@^5.4.3:
   version "5.5.12"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
@@ -5902,7 +5910,7 @@ rxjs@^5.4.3:
   dependencies:
     symbol-observable "1.0.1"
 
-rxjs@^6.2.2, rxjs@^6.4.0:
+rxjs@^6.2.2, rxjs@^6.4.0, rxjs@^6.6.2:
   version "6.6.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.2.tgz#8096a7ac03f2cc4fe5860ef6e572810d9e01c0d2"
   integrity sha512-BHdBMVoWC2sL26w//BCu3YzKT4s2jip/WhwsGEDmeKYBhKDZeYezVUnHatYB7L85v5xs0BAQmg6BEYJEKxBabg==
@@ -6604,7 +6612,7 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
-tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
@@ -6759,6 +6767,11 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+use-constant@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/use-constant/-/use-constant-1.0.0.tgz#cfab998e6fc19ddc62b056875709f1420e339a10"
+  integrity sha512-HmVrMl3+1tEr64ace4UtP5WTdnLyrvYKwF54JVf7B7lSB76JSERDvvgWkaaxlOM3S0dSl1U3WH1l9PupNnzsvQ==
 
 use-subscription@^1.0.0:
   version "1.4.1"
